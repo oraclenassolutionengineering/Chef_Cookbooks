@@ -1,0 +1,5 @@
+default['domain-packed']['name'] = "OTD_Domain"
+default['domain-packed']['domains_path'] = "/data/domains"
+default['domain-packed']['apps_path'] = "/data/apps"
+default['domain-packed']['domain_template_file'] = "otd_domain.jar"
+default['domain-packed']['domain_pack_url'] =  "https://metcsgse00158.storage.oraclecloud.com/v1/Storage-metcsgse00158/Domains/#{node['domain-packed']['domain_template_file']}"
