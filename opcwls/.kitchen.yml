@@ -1,0 +1,49 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: centos71
+    driver:
+      box: "opscode_centos-7.1"
+      box_url: "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.1_chef-provisionerless.box"
+      network:
+      - ["private_network", {ip: "192.168.33.36"}]
+      synced_folders:
+        - ["/Volumes/Warriors/Projects/chef/software", "/software"]
+  - name: centos65
+    driver:
+      box: learningchef/centos65
+      box_url: learningchef/centos65”
+      network:
+      - ["private_network", {ip: "192.168.33.35"}]
+      synced_folders:
+        - ["/Volumes/Warriors/Projects/chef/software", "/software"]
+
+
+suites:
+  - name: wls
+    run_list:
+      - recipe[wls::install-wls122]
+      - recipe[wls::create_mt-domain71]
+    attributes: {"domain-mt":{
+      "name":"BareMetal",
+      "admin_server":{"port":"7001", "sslport":"7002"}
+    }}
+  - name: otd
+    run_list:
+      - recipe[wls::install-otd122]
+      - recipe[wls::create_packed-domain71]
+    attributes: {  "domain-packed":{
+        "domain_template_file":"otd_domain.jar"
+      }}
+  - name: wls_packed
+    run_list:
+      - recipe[wls::install-wls122]
+      - recipe[wls::create_packed-domain71]
+    attributes: {  "domain-packed":{
+      "domain_template_file":"base_domain.jar"
+    }}
