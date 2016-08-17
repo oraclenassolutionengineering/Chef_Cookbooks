@@ -5,13 +5,6 @@
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 include_recipe "java"
-include_recipe 'chef-sugar::default'
-
-update_yum = "yum upgrade -y"
-
-execute update_yum do
- action :run
-end
 
 # User and group creation
 os_user = node['env-122']['os_user']
@@ -61,12 +54,13 @@ execute run_reset do
 end
 
 # Install packages
-node['env-122']['packages'].each do |package|
-	package_title = "#{package['name']}.#{package['arch']}"
-	yum_package package_title do
-		action :install
-	end
-end
+#node['env-122']['packages'].each do |package|
+#	package_title = "#{package['name']}.#{package['arch']}"
+
+#	yum_package package_title do
+#		action :install
+#	end
+#end
 
 # Create FMW Directories
 directory node['env-122']['home'] do
@@ -95,22 +89,4 @@ template ora_inventory_file do
 		:ora_inventory_directory => ora_inventory_directory,
 		:install_group => os_installer_group
 	})
-end
-
-firewall 'default' do
-  log_level :high
-  action    :install
-end
-
-firewall_rule 'allow world to ssh' do
-  port 22
-  source '0.0.0.0/0'
-  only_if { node['firewall']['allow_ssh'] }
-end
-# open multiple ports for http/https, note that the protocol
-# attribute is required when using ports
-firewall_rule 'http/https' do
-  protocol :tcp
-  port     [80, 443, 8080, 7001, 7002, 5556]
-  command   :allow
 end

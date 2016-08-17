@@ -23,8 +23,8 @@ default['domain-mt']['admin_server'] = {
 	"machine_name" => "AdminMachine",
   "username" => "weblogic",
   "password" => "welcome1",
-	"port" => "8001",
-  "sslport" => "8002"
+	"port" => "7001",
+  "sslport" => "7002"
 }
 
 default['domain-mt']['managed_servers'] = [
